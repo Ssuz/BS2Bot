@@ -10,7 +10,7 @@ module.exports = {
     run: (bot, message, args) => {
        
         //test용 커맨드
-
+        //수정확인용
                 
 
     }
