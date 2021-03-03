@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { Client, Collection } = require('discord.js');
 const bot = new Client();
+const db = require('./conn/mysql');
 
 bot.commands = new Collection();
 bot.aliases = new Collection();
@@ -9,11 +10,59 @@ bot.aliases = new Collection();
     require(`./handlers/${handler}`)(bot);
 });
 
+db.connect((err) => {
+    if (err) {
+        console.log(err);
+    }else{
+        console.log('DB Connected...')
+    }
+});
+
 
 bot.on('ready', () => {
     console.log(`Bot is Ready`)
     bot.user.setStatus('idle')
     bot.user.setActivity('!help', {type:'WATCHING'})
+});
+
+bot.on('guildMemberAdd', async member => {
+    const sql = `SELECT * FROM users WHERE discordID = ${member.id};`
+    db.query(sql, function(err, result) {
+        if(err) return console.log(err)
+        const data = result.map(c => c.discordID) 
+        
+        if(member.id != data) {
+            db.query('INSERT INTO users(discordID, tag, warn, admin) VALUES (?,?,?,?)',[member.id, member.user.tag, 0 ,0 ], function(err) {
+                if(err){ 
+                    return console.log(err)
+                } else {
+                    console.log(`${member.user.tag} 님의 정보 저장`)
+                }
+            });
+        } else {
+            console.log('이미 존재하는 아이디')
+        }
+
+        
+    })
+});
+
+bot.on('guildMemberRemove', async member => {
+    await db.query(`DELETE FROM users WHERE discordID = ${member.id}`, function(err) {
+        if(err) { 
+            console.log(err)
+        } else {
+            console.log(`${member.user.tag}님의 정보 삭제`)
+        }
+    });
+});
+
+bot.on('guildMemberUpdate', (oldMember, newMember) => {
+    const sql = `UPDATE users SET tag='${newMember.displayName}#${newMember.user.discriminator}' WHERE tag='${oldMember.displayName}#${oldMember.user.discriminator}';`
+    db.query(sql, function(err, result) {
+        if(err) console.log(err)
+        return console.log('유저 닉네임 변경')
+    });
 });
 
 bot.on("message", async message => {
@@ -35,6 +84,7 @@ bot.on("message", async message => {
 
     if (command) 
         command.run(bot, message, args);
+     
 });
 
 bot.login(process.env.BOT_TOKEN)
