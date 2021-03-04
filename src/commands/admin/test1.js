@@ -9,17 +9,17 @@ module.exports = {
     description: "Says your input via the bot",
     usage: "<input>",
     run: (bot, message, args) => {
-       
+       //어드민 확인
         db.query(`SELECT * FROM users WHERE discordID = ${message.author.id};`, function(err, result) {
-           const data = result.map(c => c.discordID)
-           const admin = result.map(v => v.admin)
+           const data = result.map(c => c.discordID);
+           const admin = result.map(c => c.admin);
 
             if(admin == 1) {
-                console.log(true)
+                console.log(true);
             } else{
-                console.log(false)
+                console.log(false);
             }
-        })
+        });
 
                 
 
