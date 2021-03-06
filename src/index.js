@@ -88,6 +88,8 @@ bot.on("message", async message => {
 
     if (command) 
     command.run(bot, message, args);
+    
+    
 });
 
 bot.login(process.env.BOT_TOKEN);

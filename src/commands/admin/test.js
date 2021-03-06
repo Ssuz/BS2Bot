@@ -9,14 +9,7 @@ module.exports = {
     usage: "<input>",
     run: (bot, message, args) => {
        //어드민 확인
-        const usesql = `SELECT * FROM guilds WHERE guildID = ${message.guild.id} `
-            db.query(usesql, async function(err, res) {
-            if (err) return console.log(err)
-        const useOncheck = res.map(c =>c.useOn);
-            if(useOncheck == 1) {
-        } else {
-            message.channel.send("No")
-            }
-        });
+       const guildname = bot.guilds.cache.get(args[0])
+       message.channel.send(guildname.name);
     }
 }

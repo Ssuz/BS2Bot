@@ -1,7 +1,7 @@
   
 const Discord = require("discord.js")
 const db = require("../../conn/mysql");
-const moment = require('moment');
+
 module.exports = {
     name: "help",
     aliases: [],
