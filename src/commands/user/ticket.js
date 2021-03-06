@@ -25,10 +25,10 @@ module.exports = {
             parent: '816535049712173077',   
             permissionOverwrites: [{
                 id: message.guild.id,
-                deny: ["READ_MESSAGE_HISTORY"]
+                deny: ["VIEW_CHANNEL"]
             }, {
                 id: message.author.id,
-                allow: ["READ_MESSAGE_HISTORY", "SEND_MESSAGES"]
+                allow: ["VIEW_CHANNEL", "SEND_MESSAGES"]
             }]
         }).then(ch => {
             let ticketembed = new Discord.MessageEmbed()
