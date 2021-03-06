@@ -3,7 +3,7 @@ const Discord = require("discord.js")
 const db = require('../../conn/mysql');
 
 module.exports = {
-    name: "테스트",
+    name: "0",
     aliases: [],
     category: "moderation",
     description: "Says your input via the bot",

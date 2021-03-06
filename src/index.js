@@ -61,7 +61,7 @@ bot.on('guildMemberUpdate', (oldMember, newMember) => {
     if(oldMember.displayName != newMember.displayName){
         const sql = `UPDATE users SET tag='${newMember.displayName}#${newMember.user.discriminator}' WHERE tag='${oldMember.displayName}#${oldMember.user.discriminator}';`
         db.query(sql, function(err, result) {
-            if(err) console.log(err)
+            if(err) return console.log(err)
             return console.log('유저 닉네임 변경');
         });
     } else {
@@ -80,15 +80,14 @@ bot.on("message", async message => {
 
     const args = message.content.slice(prefix.length).trim().split(/ +/g);
     const cmd = args.shift().toLowerCase();
-    
+
     if (cmd.length === 0) return;
 
     let command = bot.commands.get(cmd);
     if (!command) command = bot.commands.get(bot.aliases.get(cmd));
 
     if (command) 
-        command.run(bot, message, args);
-    
+    command.run(bot, message, args);
 });
 
-bot.login(process.env.BOT_TOKEN)
+bot.login(process.env.BOT_TOKEN);

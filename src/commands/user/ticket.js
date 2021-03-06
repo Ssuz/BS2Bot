@@ -8,7 +8,8 @@ module.exports = {
     description: "Says your input via the bot",
     usage: "<input>",
     run: (bot, message, args) => {
-       if(message.guild.channels.cache.filter(c => c.topic === message.author.id && String(c.name).endsWith("-ticket")).size > 0)
+        message.delete();
+       if(message.guild.channels.cache.filter(c => c.topic === message.author.id && String(c.name).endsWith("-문의사항")).size > 0)
        {
            const errembed = new Discord.MessageEmbed()
            .setColor('#E50D0D')
@@ -18,7 +19,7 @@ module.exports = {
            .setFooter(`${bot.user.username}`, bot.user.displayAvatarURL());
            message.author.send(errembed);
        }else{
-        message.guild.channels.create(`${message.author.username}-ticket`, {
+        message.guild.channels.create(`${message.author.username}-문의사항`, {
             topic: message.author.id,
             type: "text",
             parent: '816535049712173077',   
